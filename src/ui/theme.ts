@@ -52,8 +52,11 @@ export const spacing = {
 // their id.
 const KNOWN_USER_COLORS: Record<string, string> = {
   'هاني': colors.blue,
-  'محمد': colors.purple,
+  'حمادة': colors.purple,
   'معاذ': colors.gold,
+  Hani: colors.blue,
+  Hamada: colors.purple,
+  Moath: colors.gold,
 };
 
 const FALLBACK_PALETTE = [colors.blue, colors.purple, colors.gold, colors.success, colors.warning, colors.danger];

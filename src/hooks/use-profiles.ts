@@ -1,10 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { fetchProfiles } from '@/api/queries';
+import { localizeProfile } from '@/domain/profile';
 import { useSession } from '@/hooks/use-session';
 
 export function useProfiles() {
-  return useQuery({ queryKey: ['profiles'], queryFn: fetchProfiles });
+  return useQuery({
+    queryKey: ['profiles'],
+    queryFn: fetchProfiles,
+    select: (profiles) => profiles.map(localizeProfile),
+  });
 }
 
 export function useMyProfile() {

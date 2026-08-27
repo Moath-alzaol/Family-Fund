@@ -8,13 +8,13 @@ insert into auth.users (
 ) values
   ('00000000-0000-0000-0000-000000000000', '11111111-1111-1111-1111-111111111111', 'authenticated', 'authenticated',
    'hani.alzaol@family-fund.local', crypt('password123', gen_salt('bf')), now(),
-   '{"provider":"email","providers":["email"]}', '{"display_name":"هاني"}', now(), now(), '', '', '', ''),
+   '{"provider":"email","providers":["email"]}', '{"display_name":"هاني","display_name_en":"Hani"}', now(), now(), '', '', '', ''),
   ('00000000-0000-0000-0000-000000000000', '22222222-2222-2222-2222-222222222222', 'authenticated', 'authenticated',
    'hamada.alzaol@family-fund.local', crypt('password123', gen_salt('bf')), now(),
-   '{"provider":"email","providers":["email"]}', '{"display_name":"محمد"}', now(), now(), '', '', '', ''),
+   '{"provider":"email","providers":["email"]}', '{"display_name":"حمادة","display_name_en":"Hamada"}', now(), now(), '', '', '', ''),
   ('00000000-0000-0000-0000-000000000000', '33333333-3333-3333-3333-333333333333', 'authenticated', 'authenticated',
    'moath.alzaol@family-fund.local', crypt('password123', gen_salt('bf')), now(),
-   '{"provider":"email","providers":["email"]}', '{"display_name":"معاذ"}', now(), now(), '', '', '', '');
+   '{"provider":"email","providers":["email"]}', '{"display_name":"معاذ","display_name_en":"Moath"}', now(), now(), '', '', '', '');
 
 insert into auth.identities (id, user_id, provider_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
 values
@@ -25,10 +25,10 @@ values
   (gen_random_uuid(), '33333333-3333-3333-3333-333333333333', '33333333-3333-3333-3333-333333333333',
    '{"sub":"33333333-3333-3333-3333-333333333333","email":"moath.alzaol@family-fund.local"}', 'email', now(), now(), now());
 
-insert into public.profiles (id, display_name, role, monthly_commitment_fils) values
-  ('11111111-1111-1111-1111-111111111111', 'هاني', 'member', 100000),
-  ('22222222-2222-2222-2222-222222222222', 'محمد', 'member', 50000),
-  ('33333333-3333-3333-3333-333333333333', 'معاذ', 'admin', 50000);
+insert into public.profiles (id, display_name, display_name_en, role, monthly_commitment_fils) values
+  ('11111111-1111-1111-1111-111111111111', 'هاني', 'Hani', 'member', 100000),
+  ('22222222-2222-2222-2222-222222222222', 'حمادة', 'Hamada', 'member', 50000),
+  ('33333333-3333-3333-3333-333333333333', 'معاذ', 'Moath', 'admin', 50000);
 
 -- Financial data intentionally starts empty. The app creates the current
 -- period's unpaid commitment rows lazily when an authenticated member opens

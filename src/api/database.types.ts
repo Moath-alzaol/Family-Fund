@@ -167,6 +167,7 @@ export type Database = {
         Row: {
           created_at: string
           display_name: string
+          display_name_en: string | null
           id: string
           is_active: boolean
           monthly_commitment_fils: number
@@ -175,6 +176,7 @@ export type Database = {
         Insert: {
           created_at?: string
           display_name: string
+          display_name_en?: string | null
           id: string
           is_active?: boolean
           monthly_commitment_fils: number
@@ -183,6 +185,7 @@ export type Database = {
         Update: {
           created_at?: string
           display_name?: string
+          display_name_en?: string | null
           id?: string
           is_active?: boolean
           monthly_commitment_fils?: number

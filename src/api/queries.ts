@@ -22,7 +22,7 @@ export async function fetchFundBalance() {
 export async function fetchRequests(status?: RequestStatus) {
   let query = supabase
     .from('requests')
-    .select('*, requester:profiles!requests_requester_id_fkey(display_name, role)')
+    .select('*, requester:profiles!requests_requester_id_fkey(display_name, display_name_en, role)')
     .order('created_at', { ascending: false });
   if (status) {
     query = query.eq('status', status);
@@ -35,7 +35,7 @@ export async function fetchRequests(status?: RequestStatus) {
 export async function fetchLedger(accountType: 'personal' | 'fund', accountOwner?: string) {
   let query = supabase
     .from('ledger_entries')
-    .select('*, request:requests(beneficiary, requester:profiles!requests_requester_id_fkey(display_name))')
+    .select('*, request:requests(beneficiary, requester:profiles!requests_requester_id_fkey(display_name, display_name_en))')
     .eq('account_type', accountType)
     .order('occurred_at', { ascending: true });
   if (accountOwner) {
@@ -59,7 +59,7 @@ export async function fetchRequestById(id: string) {
   const { data, error } = await supabase
     .from('requests')
     .select(
-      '*, requester:profiles!requests_requester_id_fkey(display_name, role), decider:profiles!requests_decided_by_fkey(display_name)'
+      '*, requester:profiles!requests_requester_id_fkey(display_name, display_name_en, role), decider:profiles!requests_decided_by_fkey(display_name, display_name_en)'
     )
     .eq('id', id)
     .single();
