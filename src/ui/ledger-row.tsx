@@ -1,7 +1,8 @@
+import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { formatJod } from '@/domain/money';
-import { intlLocaleTag } from '@/i18n/locale';
+import { intlLocaleTag, isRTL } from '@/i18n/locale';
 import { colors, fonts } from '@/ui/theme';
 import { MoneyText } from '@/ui/money-text';
 
@@ -13,6 +14,7 @@ export interface LedgerRowData {
 }
 
 export function LedgerRow({ entry, showDot = false, bordered = true }: { entry: LedgerRowData; showDot?: boolean; bordered?: boolean }) {
+  const styles = useMemo(() => createStyles(), []);
   const isCredit = entry.amountFils > 0;
   const date = new Intl.DateTimeFormat(intlLocaleTag(), { day: 'numeric', month: 'long', year: 'numeric' }).format(
     new Date(entry.occurredAt)
@@ -21,23 +23,24 @@ export function LedgerRow({ entry, showDot = false, bordered = true }: { entry: 
   return (
     <View style={[styles.row, bordered && styles.rowBorder]}>
       {showDot && <View style={[styles.dot, { backgroundColor: isCredit ? colors.success : colors.danger }]} />}
-      <MoneyText style={[styles.amount, { color: isCredit ? colors.success : colors.danger }]}>
-        {isCredit ? '+' : '−'}
-        {formatJod(Math.abs(entry.amountFils))}
-      </MoneyText>
       <View style={styles.textBlock}>
         <Text style={styles.description} numberOfLines={1}>
           {entry.description}
         </Text>
         <Text style={styles.date}>{date}</Text>
       </View>
+      <MoneyText style={[styles.amount, { color: isCredit ? colors.success : colors.danger }]}>
+        {isCredit ? '+' : '−'}
+        {formatJod(Math.abs(entry.amountFils))}
+      </MoneyText>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles() {
+  return StyleSheet.create({
   row: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     alignItems: 'center',
     gap: 10,
     paddingVertical: 13,
@@ -58,17 +61,22 @@ const styles = StyleSheet.create({
   },
   textBlock: {
     flex: 1,
-    alignItems: 'flex-end',
+    alignItems: isRTL() ? 'flex-end' : 'flex-start',
   },
   description: {
     fontFamily: fonts.medium,
     fontSize: 13,
     color: colors.ink,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   date: {
     fontFamily: fonts.regular,
     fontSize: 11,
     color: colors.muted,
     marginTop: 2,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
-});
+  });
+}

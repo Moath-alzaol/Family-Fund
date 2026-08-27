@@ -5,13 +5,21 @@
 export type Locale = 'ar' | 'en';
 
 let currentLocale: Locale = 'ar';
+const listeners = new Set<(locale: Locale) => void>();
 
 export function getCurrentLocaleSync(): Locale {
   return currentLocale;
 }
 
 export function setCurrentLocaleState(locale: Locale): void {
+  if (locale === currentLocale) return;
   currentLocale = locale;
+  listeners.forEach((listener) => listener(locale));
+}
+
+export function subscribeToLocale(listener: (locale: Locale) => void): () => void {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
 }
 
 // The BCP-47 tag to hand to Intl.DateTimeFormat/NumberFormat for the current
@@ -20,12 +28,9 @@ export function intlLocaleTag(): string {
   return currentLocale === 'ar' ? 'ar' : 'en-US';
 }
 
-// Expo Go doesn't apply I18nManager.forceRTL()'s native mirroring at
-// runtime (it only takes effect after a full native relaunch, which Expo
-// Go's shared shell never gives it) — so layout direction is driven
-// explicitly from locale state instead of I18nManager.isRTL everywhere in
-// the UI. The app already fully reloads on language switch, so reading
-// this at module-eval time in a screen's StyleSheet.create is safe.
+// Layout direction is driven explicitly from locale state so Expo Go and
+// standalone builds behave identically. RootLayout remounts the navigation
+// tree when this value changes, which refreshes every locale-aware style.
 export function isRTL(): boolean {
   return currentLocale === 'ar';
 }

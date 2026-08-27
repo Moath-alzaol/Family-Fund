@@ -114,6 +114,7 @@ function createStyles() {
   return StyleSheet.create({
   screen: {
     flex: 1,
+    direction: 'ltr',
     backgroundColor: colors.bg,
   },
   content: {
@@ -126,6 +127,7 @@ function createStyles() {
     color: colors.muted,
     marginBottom: 16,
     textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   label: {
     fontFamily: fonts.semiBold,
@@ -134,6 +136,7 @@ function createStyles() {
     marginTop: 14,
     marginBottom: 6,
     textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   input: {
     borderWidth: 1,
@@ -145,11 +148,14 @@ function createStyles() {
     backgroundColor: colors.surface,
     color: colors.ink,
     textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   fieldError: {
     color: colors.danger,
     fontSize: 12,
     marginTop: 6,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   submit: {
     marginTop: 20,

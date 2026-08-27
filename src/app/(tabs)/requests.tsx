@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -27,6 +27,7 @@ type Filter = "all" | RequestStatus;
 export default function RequestsScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const chipsScrollRef = useRef<ScrollView>(null);
   const [filter, setFilter] = useState<Filter>("all");
   const styles = useMemo(() => createStyles(), []);
 
@@ -66,6 +67,7 @@ export default function RequestsScreen() {
       count: rejected.data?.length ?? 0,
     },
   ];
+  const displayedFilters = isRTL() ? [...filters].reverse() : filters;
 
   return (
     <View style={styles.screen}>
@@ -74,12 +76,18 @@ export default function RequestsScreen() {
       </View>
 
       <ScrollView
+        ref={chipsScrollRef}
         horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.chipsScroll}
         contentContainerStyle={styles.chipsRow}
+        onContentSizeChange={() => {
+          if (isRTL()) {
+            chipsScrollRef.current?.scrollToEnd({ animated: false });
+          }
+        }}
       >
-        {filters.map((f) => (
+        {displayedFilters.map((f) => (
           <TouchableOpacity
             key={f.key}
             style={[styles.chip, filter === f.key && styles.chipOn]}
@@ -170,6 +178,7 @@ function createStyles() {
   return StyleSheet.create({
     screen: {
       flex: 1,
+      direction: "ltr",
       backgroundColor: colors.bg,
     },
     header: {
@@ -187,11 +196,12 @@ function createStyles() {
     },
     chipsRow: {
       paddingHorizontal: 20,
+      flexDirection: "row",
       gap: 8,
       paddingBottom: 16,
     },
     chip: {
-      flexDirection: "row",
+      flexDirection: isRTL() ? "row-reverse" : "row",
       alignItems: "center",
       gap: 6,
       minHeight: 40,
@@ -213,6 +223,7 @@ function createStyles() {
       color: colors.muted,
       includeFontPadding: false,
       textAlignVertical: "center",
+      writingDirection: isRTL() ? "rtl" : "ltr",
     },
     chipLabelOn: {
       color: "#000",
@@ -261,21 +272,25 @@ function createStyles() {
     textBlock: {
       flex: 1,
       minWidth: 0,
-      alignItems: "flex-end",
+      alignItems: isRTL() ? "flex-end" : "flex-start",
     },
     name: {
       fontFamily: fonts.bold,
       fontSize: 14,
       color: colors.ink,
       marginBottom: 4,
+      textAlign: isRTL() ? "right" : "left",
+      writingDirection: isRTL() ? "rtl" : "ltr",
     },
     type: {
       fontFamily: fonts.regular,
       fontSize: 12,
       color: colors.muted,
+      textAlign: isRTL() ? "right" : "left",
+      writingDirection: isRTL() ? "rtl" : "ltr",
     },
     trailing: {
-      alignItems: "flex-end",
+      alignItems: isRTL() ? "flex-start" : "flex-end",
       gap: 6,
     },
     amount: {
@@ -301,12 +316,15 @@ function createStyles() {
       fontSize: 15,
       color: colors.ink,
       marginBottom: 6,
+      textAlign: "center",
+      writingDirection: isRTL() ? "rtl" : "ltr",
     },
     emptySubtitle: {
       fontFamily: fonts.regular,
       fontSize: 13,
       color: colors.muted,
       textAlign: "center",
+      writingDirection: isRTL() ? "rtl" : "ltr",
     },
   });
 }

@@ -115,8 +115,8 @@ export default function RequestDetailScreen() {
       <ScreenHeader title={strings.requestDetail.title} />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={[styles.statusBanner, { backgroundColor: TONE[statusTone].bg, borderColor: TONE[statusTone].border }]}>
-          <Text style={[styles.statusBannerText, { color: TONE[statusTone].fg }]}>{statusText}</Text>
           <Text style={[styles.statusBannerLabel, { color: TONE[statusTone].fg }]}>{strings.status[r.status]}</Text>
+          <Text style={[styles.statusBannerText, { color: TONE[statusTone].fg }]}>{statusText}</Text>
         </View>
 
         <Card>
@@ -211,10 +211,10 @@ export default function RequestDetailScreen() {
           <View style={styles.modalOverlay}>
             <View style={styles.modalSheet}>
               <View style={styles.modalHeaderRow}>
+                <Text style={styles.modalTitle}>{strings.rejectModal.title}</Text>
                 <TouchableOpacity onPress={() => setRejecting(false)}>
                   <Text style={styles.modalCancel}>{strings.rejectModal.cancel}</Text>
                 </TouchableOpacity>
-                <Text style={styles.modalTitle}>{strings.rejectModal.title}</Text>
               </View>
               <Text style={styles.modalHelper}>{strings.rejectModal.helper}</Text>
               <TextInput
@@ -254,6 +254,7 @@ function createStyles() {
   return StyleSheet.create({
   screen: {
     flex: 1,
+    direction: 'ltr',
     backgroundColor: colors.bg,
   },
   content: {
@@ -273,10 +274,14 @@ function createStyles() {
   statusBannerText: {
     fontFamily: fonts.regular,
     fontSize: 13,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   statusBannerLabel: {
     fontFamily: fonts.extraBold,
     fontSize: 15,
+    textAlign: isRTL() ? 'left' : 'right',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   requesterRow: {
     flexDirection: isRTL() ? 'row-reverse' : 'row',
@@ -295,6 +300,8 @@ function createStyles() {
     fontFamily: fonts.extraBold,
     fontSize: 20,
     color: colors.ink,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   divider: {
     borderTopWidth: 1,
@@ -316,7 +323,7 @@ function createStyles() {
     textAlign: isRTL() ? 'right' : 'left',
   },
   amountRow: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     alignItems: 'flex-end',
     gap: 8,
     marginBottom: 8,
@@ -367,11 +374,15 @@ function createStyles() {
     fontFamily: fonts.regular,
     fontSize: 12,
     color: colors.muted,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   dateValue: {
     fontFamily: fonts.regular,
     fontSize: 14,
     color: colors.ink,
+    textAlign: isRTL() ? 'left' : 'right',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   rejectionBlock: {
     padding: 20,
@@ -414,7 +425,7 @@ function createStyles() {
     textAlign: isRTL() ? 'right' : 'left',
   },
   actionsRow: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     gap: 12,
   },
   rejectButton: {
@@ -430,6 +441,8 @@ function createStyles() {
     fontFamily: fonts.bold,
     fontSize: 15,
     color: colors.danger,
+    textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   approveButton: {
     flex: 2,
@@ -442,6 +455,8 @@ function createStyles() {
     fontFamily: fonts.bold,
     fontSize: 15,
     color: '#000',
+    textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   disabled: {
     opacity: 0.5,
@@ -460,9 +475,11 @@ function createStyles() {
     fontSize: 13,
     color: colors.muted,
     textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   modalOverlay: {
     flex: 1,
+    direction: 'ltr',
     backgroundColor: 'rgba(0,0,0,0.72)',
     justifyContent: 'flex-end',
   },
@@ -477,7 +494,7 @@ function createStyles() {
     borderBottomWidth: 0,
   },
   modalHeaderRow: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 8,
@@ -486,11 +503,15 @@ function createStyles() {
     fontFamily: fonts.regular,
     fontSize: 15,
     color: colors.muted,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   modalTitle: {
     fontFamily: fonts.bold,
     fontSize: 18,
     color: colors.ink,
+    textAlign: isRTL() ? 'left' : 'right',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   modalHelper: {
     fontFamily: fonts.regular,
@@ -498,6 +519,8 @@ function createStyles() {
     color: colors.muted,
     lineHeight: 19,
     marginBottom: 20,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   modalTextarea: {
     padding: 16,
@@ -512,6 +535,7 @@ function createStyles() {
     height: 100,
     textAlignVertical: 'top',
     textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   modalTextareaError: {
     borderColor: colors.danger,
@@ -521,6 +545,8 @@ function createStyles() {
     fontSize: 12,
     color: colors.danger,
     marginTop: 8,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   confirmButton: {
     marginTop: 16,
@@ -533,6 +559,8 @@ function createStyles() {
     fontFamily: fonts.bold,
     fontSize: 15,
     color: '#fff',
+    textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   });
 }

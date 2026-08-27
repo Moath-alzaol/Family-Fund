@@ -4,7 +4,7 @@
     "slug": "family-fund-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/family-fund-app-icon.png",
     "scheme": "familyfundapp",
     "userInterfaceStyle": "automatic",
     "ios": {
@@ -30,9 +30,9 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "backgroundColor": "#080E1A",
+          "image": "./assets/images/family-fund-mark.png",
+          "imageWidth": 190
         }
       ],
       "expo-font"

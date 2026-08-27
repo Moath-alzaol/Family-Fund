@@ -23,6 +23,7 @@ export function ErrorView({ message }: { message?: string }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    direction: 'ltr',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,

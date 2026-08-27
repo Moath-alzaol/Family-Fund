@@ -109,6 +109,7 @@ function createStyles() {
   return StyleSheet.create({
   screen: {
     flex: 1,
+    direction: 'ltr',
     backgroundColor: colors.bg,
   },
   content: {
@@ -143,7 +144,7 @@ function createStyles() {
     textAlign: isRTL() ? 'right' : 'left',
   },
   heroAmountRow: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     alignItems: 'flex-end',
     gap: 8,
   },
@@ -191,7 +192,7 @@ function createStyles() {
     flex: 1,
   },
   brotherNameRow: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     alignItems: 'center',
     gap: 8,
     marginBottom: 5,
@@ -200,6 +201,8 @@ function createStyles() {
     fontFamily: fonts.bold,
     fontSize: 17,
     color: colors.ink,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   adminPill: {
     paddingVertical: 1,
@@ -211,6 +214,7 @@ function createStyles() {
     fontFamily: fonts.semiBold,
     fontSize: 11,
     color: colors.gold,
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   brotherStatus: {
     fontFamily: fonts.medium,
@@ -218,7 +222,7 @@ function createStyles() {
     textAlign: isRTL() ? 'right' : 'left',
   },
   brotherTrailing: {
-    alignItems: 'flex-end',
+    alignItems: isRTL() ? 'flex-start' : 'flex-end',
   },
   brotherAmount: {
     fontSize: 22,
@@ -229,6 +233,8 @@ function createStyles() {
     fontFamily: fonts.regular,
     fontSize: 12,
     color: colors.muted,
+    textAlign: isRTL() ? 'left' : 'right',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   });
 }

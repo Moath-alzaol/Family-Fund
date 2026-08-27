@@ -11,11 +11,12 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { queryClient } from '@/api/query-client';
 import { SessionProvider } from '@/hooks/use-session';
-import { initLocale } from '@/i18n/locale';
+import { initLocale, subscribeToLocale, type Locale } from '@/i18n/locale';
 import { colors } from '@/ui/theme';
 
 SplashScreen.preventAutoHideAsync();
@@ -28,30 +29,34 @@ export default function RootLayout() {
     Cairo_700Bold,
     Cairo_800ExtraBold,
   });
-  const [localeLoaded, setLocaleLoaded] = useState(false);
+  const [locale, setLocale] = useState<Locale | null>(null);
 
   useEffect(() => {
-    initLocale().then(() => setLocaleLoaded(true));
+    const unsubscribe = subscribeToLocale(setLocale);
+    initLocale().then(setLocale);
+    return unsubscribe;
   }, []);
 
   useEffect(() => {
-    if (fontsLoaded && localeLoaded) {
+    if (fontsLoaded && locale) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded, localeLoaded]);
+  }, [fontsLoaded, locale]);
 
-  if (!fontsLoaded || !localeLoaded) {
+  if (!fontsLoaded || !locale) {
     return null;
   }
 
   return (
-    <SafeAreaProvider>
-      <StatusBar style="light" />
-      <QueryClientProvider client={queryClient}>
-        <SessionProvider>
-          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }} />
-        </SessionProvider>
-      </QueryClientProvider>
+    <SafeAreaProvider key={locale}>
+      <View style={{ flex: 1, direction: 'ltr' }}>
+        <StatusBar style="light" />
+        <QueryClientProvider client={queryClient}>
+          <SessionProvider>
+            <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }} />
+          </SessionProvider>
+        </QueryClientProvider>
+      </View>
     </SafeAreaProvider>
   );
 }

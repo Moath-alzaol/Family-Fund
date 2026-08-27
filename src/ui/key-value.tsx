@@ -36,11 +36,15 @@ function createStyles() {
       fontFamily: fonts.regular,
       fontSize: 12.5,
       color: colors.muted,
+      textAlign: isRTL() ? 'right' : 'left',
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
     value: {
       fontFamily: fonts.semiBold,
       fontSize: 13.5,
       color: colors.ink,
+      textAlign: isRTL() ? 'left' : 'right',
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
   });
 }

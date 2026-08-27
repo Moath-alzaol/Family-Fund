@@ -48,6 +48,7 @@ function createStyles() {
       fontSize: 22,
       color: colors.ink,
       textAlign: isRTL() ? 'right' : 'left',
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
   });
 }

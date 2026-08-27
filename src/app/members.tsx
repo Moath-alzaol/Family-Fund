@@ -102,6 +102,7 @@ function createStyles() {
   return StyleSheet.create({
     screen: {
       flex: 1,
+      direction: 'ltr',
       backgroundColor: colors.bg,
     },
     content: {
@@ -148,7 +149,7 @@ function createStyles() {
       flex: 1,
     },
     nameRow: {
-      flexDirection: 'row',
+      flexDirection: isRTL() ? 'row-reverse' : 'row',
       alignItems: 'center',
       gap: 8,
       flexWrap: 'wrap',
@@ -158,6 +159,8 @@ function createStyles() {
       fontFamily: fonts.extraBold,
       fontSize: 19,
       color: colors.ink,
+      textAlign: isRTL() ? 'right' : 'left',
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
     rolePill: {
       paddingVertical: 2,
@@ -173,11 +176,13 @@ function createStyles() {
     rolePillText: {
       fontFamily: fonts.semiBold,
       fontSize: 11,
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
     youSuffix: {
       fontFamily: fonts.regular,
       fontSize: 11,
       color: colors.muted,
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
     commitmentLine: {
       fontFamily: fonts.regular,
@@ -186,7 +191,7 @@ function createStyles() {
       textAlign: isRTL() ? 'right' : 'left',
     },
     statsRow: {
-      flexDirection: 'row',
+      flexDirection: isRTL() ? 'row-reverse' : 'row',
       gap: 10,
     },
     statBox: {
@@ -212,6 +217,8 @@ function createStyles() {
       fontSize: 11,
       color: colors.muted,
       marginBottom: 5,
+      textAlign: isRTL() ? 'right' : 'left',
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
     statValue: {
       fontSize: 20,
@@ -227,11 +234,15 @@ function createStyles() {
       fontSize: 11,
       color: colors.muted,
       marginTop: 3,
+      textAlign: isRTL() ? 'right' : 'left',
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
     statStatus: {
       fontFamily: fonts.semiBold,
       fontSize: 11,
       marginTop: 3,
+      textAlign: isRTL() ? 'right' : 'left',
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
     addButton: {
       borderWidth: 2,
@@ -239,7 +250,7 @@ function createStyles() {
       borderStyle: 'dashed',
       borderRadius: radii.xxl,
       padding: 18,
-      flexDirection: 'row',
+      flexDirection: isRTL() ? 'row-reverse' : 'row',
       alignItems: 'center',
       justifyContent: 'center',
       gap: 8,
@@ -249,6 +260,7 @@ function createStyles() {
       fontFamily: fonts.semiBold,
       fontSize: 14,
       color: colors.muted,
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
   });
 }

@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { z } from 'zod';
 
@@ -47,9 +47,11 @@ export default function SignInScreen() {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingScreen>
         <ScrollView contentContainerStyle={styles.centered} keyboardShouldPersistTaps="handled">
-          <LinearGradient colors={[colors.gold, '#6B4C0A']} start={{ x: 0.15, y: 0 }} end={{ x: 0.85, y: 1 }} style={styles.logo}>
-            <Text style={styles.logoGlyph}>ص</Text>
-          </LinearGradient>
+          <Image
+            source={require('../../../assets/images/family-fund-mark.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
 
           <Text style={styles.title}>{strings.signIn.title}</Text>
           <Text style={styles.subtitle}>{strings.signIn.subtitle}</Text>
@@ -115,6 +117,7 @@ function createStyles() {
   return StyleSheet.create({
   container: {
     flex: 1,
+    direction: 'ltr',
     backgroundColor: colors.bg,
   },
   centered: {
@@ -123,29 +126,22 @@ function createStyles() {
     paddingHorizontal: 24,
   },
   logo: {
-    width: 84,
-    height: 84,
-    borderRadius: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 108,
+    height: 108,
     alignSelf: 'center',
-    marginBottom: 22,
+    marginBottom: 18,
     shadowColor: colors.gold,
-    shadowOpacity: 0.35,
-    shadowRadius: 24,
+    shadowOpacity: 0.28,
+    shadowRadius: 20,
     shadowOffset: { width: 0, height: 12 },
     elevation: 8,
-  },
-  logoGlyph: {
-    fontFamily: fonts.extraBold,
-    fontSize: 40,
-    color: '#fff',
   },
   title: {
     fontFamily: fonts.extraBold,
     fontSize: 30,
     color: colors.ink,
     textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
     marginBottom: 6,
   },
   subtitle: {
@@ -153,6 +149,7 @@ function createStyles() {
     fontSize: 14,
     color: colors.muted,
     textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
     marginBottom: 36,
   },
   label: {
@@ -161,6 +158,8 @@ function createStyles() {
     color: colors.muted,
     marginTop: 14,
     marginBottom: 6,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   input: {
     backgroundColor: colors.surface,
@@ -172,17 +171,21 @@ function createStyles() {
     fontFamily: fonts.regular,
     fontSize: 14,
     textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   fieldError: {
     color: colors.danger,
     fontSize: 12,
     marginTop: 6,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   serverError: {
     color: colors.danger,
     fontSize: 13,
     marginTop: 16,
     textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   button: {
     marginTop: 24,
@@ -197,9 +200,12 @@ function createStyles() {
     fontFamily: fonts.bold,
     fontSize: 14.5,
     color: '#fff',
+    textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   footer: {
     textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
     color: colors.muted,
     fontFamily: fonts.regular,
     fontSize: 12,

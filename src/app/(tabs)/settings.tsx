@@ -105,6 +105,7 @@ function createStyles() {
   return StyleSheet.create({
     screen: {
       flex: 1,
+      direction: 'ltr',
       backgroundColor: colors.bg,
     },
     content: {
@@ -149,6 +150,8 @@ function createStyles() {
       fontFamily: fonts.semiBold,
       fontSize: 13,
       color: colors.muted,
+      textAlign: 'center',
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
     langChipTextActive: {
       color: colors.gold,
@@ -209,6 +212,8 @@ function createStyles() {
       fontFamily: fonts.semiBold,
       fontSize: 14,
       color: colors.danger,
+      textAlign: 'center',
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
   });
 }

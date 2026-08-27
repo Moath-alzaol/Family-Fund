@@ -238,6 +238,7 @@ function createStyles() {
   return StyleSheet.create({
   screen: {
     flex: 1,
+    direction: 'ltr',
     backgroundColor: colors.bg,
   },
   content: {
@@ -277,6 +278,7 @@ function createStyles() {
   typeGlyph: {
     fontSize: 18,
     fontFamily: fonts.bold,
+    textAlign: 'center',
   },
   typeLabel: {
     fontFamily: fonts.medium,
@@ -329,6 +331,7 @@ function createStyles() {
     fontFamily: fonts.extraBold,
     fontSize: 24,
     textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: 'ltr',
   },
   amountUnit: {
     position: 'absolute',
@@ -339,6 +342,7 @@ function createStyles() {
     fontFamily: fonts.semiBold,
     fontSize: 14,
     color: colors.muted,
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   input: {
     borderWidth: 1,
@@ -350,6 +354,7 @@ function createStyles() {
     backgroundColor: colors.surface,
     color: colors.ink,
     textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   textarea: {
     height: 90,
@@ -373,12 +378,15 @@ function createStyles() {
     fontFamily: fonts.bold,
     fontSize: 16,
     color: '#fff',
+    textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   directNote: {
     fontFamily: fonts.regular,
     fontSize: 12,
     color: colors.muted,
     textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
     marginTop: -8,
   },
   successWrap: {
@@ -400,11 +408,15 @@ function createStyles() {
     fontFamily: fonts.extraBold,
     fontSize: 22,
     color: colors.ink,
+    textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   successSubtitle: {
     fontFamily: fonts.regular,
     fontSize: 14,
     color: colors.muted,
+    textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   });
 }

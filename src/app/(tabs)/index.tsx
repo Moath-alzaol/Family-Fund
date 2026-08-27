@@ -14,7 +14,7 @@ import { isRTL } from '@/i18n/locale';
 import { strings } from '@/i18n/strings';
 import { Avatar } from '@/ui/avatar';
 import { Card } from '@/ui/card';
-import { CheckIcon, ChevronLeftIcon, CrossIcon } from '@/ui/icons';
+import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, CrossIcon } from '@/ui/icons';
 import { MoneyText } from '@/ui/money-text';
 import { ErrorView, LoadingView } from '@/ui/query-state';
 import { colors, fonts } from '@/ui/theme';
@@ -123,18 +123,14 @@ export default function HomeScreen() {
               const due = c ? c.required_fils - c.paid_fils : p.monthly_commitment_fils;
               return (
                 <View key={p.id} style={styles.unpaidNotice}>
-                  <MoneyText style={styles.unpaidAmount}>{formatJod(due)} JOD</MoneyText>
                   <Text style={styles.unpaidText}>{strings.home.notPaidYet(p.display_name)}</Text>
+                  <MoneyText style={styles.unpaidAmount}>{formatJod(due)} JOD</MoneyText>
                 </View>
               );
             })}
           </Card>
 
           <TouchableOpacity style={styles.balanceButton} onPress={() => router.push('/balances')}>
-            <View style={styles.balanceDetailsLink}>
-              <Text style={styles.balanceDetailsText}>{strings.home.detailsLink}</Text>
-              <ChevronLeftIcon size={14} color={colors.gold} strokeWidth={2.5} />
-            </View>
             <View style={styles.balanceValueWrap}>
               <Text style={styles.balanceLabel}>{strings.home.myBalanceLabel}</Text>
               <View style={styles.balanceAmountRow}>
@@ -142,13 +138,18 @@ export default function HomeScreen() {
                 <Text style={styles.balanceCurrency}>{strings.common.currency}</Text>
               </View>
             </View>
+            <View style={styles.balanceDetailsLink}>
+              <Text style={styles.balanceDetailsText}>{strings.home.detailsLink}</Text>
+              {isRTL() ? (
+                <ChevronLeftIcon size={14} color={colors.gold} strokeWidth={2.5} />
+              ) : (
+                <ChevronRightIcon size={14} color={colors.gold} strokeWidth={2.5} />
+              )}
+            </View>
           </TouchableOpacity>
 
           <View>
             <View style={styles.sectionHeaderRow}>
-              <TouchableOpacity onPress={() => router.push('/requests')}>
-                <Text style={styles.viewAllLink}>{strings.home.viewAll}</Text>
-              </TouchableOpacity>
               <View style={styles.pendingTitleRow}>
                 <Text style={styles.pendingTitle}>{strings.home.pendingRequestsTitle}</Text>
                 {pendingRequests.data && pendingRequests.data.length > 0 && (
@@ -157,6 +158,9 @@ export default function HomeScreen() {
                   </View>
                 )}
               </View>
+              <TouchableOpacity onPress={() => router.push('/requests')}>
+                <Text style={styles.viewAllLink}>{strings.home.viewAll}</Text>
+              </TouchableOpacity>
             </View>
 
             {pendingRequests.data && pendingRequests.data.length > 0 ? (
@@ -202,6 +206,7 @@ function createStyles() {
   return StyleSheet.create({
   screen: {
     flex: 1,
+    direction: 'ltr',
     backgroundColor: colors.bg,
   },
   content: {
@@ -266,7 +271,7 @@ function createStyles() {
     textAlign: isRTL() ? 'right' : 'left',
   },
   fundAmountRow: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     alignItems: 'flex-end',
     gap: 8,
   },
@@ -293,6 +298,8 @@ function createStyles() {
     fontFamily: fonts.regular,
     fontSize: 12,
     color: colors.muted,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   progressValue: {
     fontSize: 12,
@@ -362,7 +369,7 @@ function createStyles() {
     backgroundColor: colors.dangerDim,
     borderWidth: 1,
     borderColor: 'rgba(248,113,113,0.2)',
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -375,6 +382,8 @@ function createStyles() {
     fontFamily: fonts.regular,
     color: colors.danger,
     fontSize: 13,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   balanceButton: {
     backgroundColor: colors.surface,
@@ -382,12 +391,12 @@ function createStyles() {
     borderColor: colors.border,
     borderRadius: 22,
     padding: 20,
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   balanceDetailsLink: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     alignItems: 'center',
     gap: 6,
   },
@@ -395,18 +404,21 @@ function createStyles() {
     fontFamily: fonts.semiBold,
     fontSize: 13,
     color: colors.gold,
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   balanceValueWrap: {
-    alignItems: 'flex-end',
+    alignItems: isRTL() ? 'flex-end' : 'flex-start',
   },
   balanceLabel: {
     fontFamily: fonts.regular,
     fontSize: 12,
     color: colors.muted,
     marginBottom: 4,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   balanceAmountRow: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     alignItems: 'flex-end',
     gap: 6,
   },
@@ -422,7 +434,7 @@ function createStyles() {
     marginBottom: 1,
   },
   sectionHeaderRow: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
@@ -431,9 +443,10 @@ function createStyles() {
     fontFamily: fonts.semiBold,
     fontSize: 13,
     color: colors.gold,
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   pendingTitleRow: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     alignItems: 'center',
     gap: 8,
   },
@@ -441,6 +454,8 @@ function createStyles() {
     fontFamily: fonts.bold,
     fontSize: 15,
     color: colors.ink,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   pendingCountBadge: {
     backgroundColor: colors.warning,
@@ -466,21 +481,25 @@ function createStyles() {
   requestTextBlock: {
     flex: 1,
     minWidth: 0,
-    alignItems: 'flex-end',
+    alignItems: isRTL() ? 'flex-end' : 'flex-start',
   },
   requestTitle: {
     fontFamily: fonts.semiBold,
     fontSize: 14,
     color: colors.ink,
     marginBottom: 4,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   requestNote: {
     fontFamily: fonts.regular,
     fontSize: 12,
     color: colors.muted,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   requestAmountBlock: {
-    alignItems: 'flex-end',
+    alignItems: isRTL() ? 'flex-start' : 'flex-end',
   },
   requestAmount: {
     fontSize: 16,
@@ -510,11 +529,15 @@ function createStyles() {
     fontSize: 15,
     color: colors.ink,
     marginBottom: 6,
+    textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   emptySubtitle: {
     fontFamily: fonts.regular,
     fontSize: 13,
     color: colors.muted,
+    textAlign: 'center',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   });
 }

@@ -92,19 +92,19 @@ export default function FundScreen() {
                 <Text style={styles.sectionLabel}>{strings.fund.reportSummaryLabel(formatPeriodLabel(period))}</Text>
                 <View style={{ gap: 10 }}>
                   <View style={[styles.statRow, styles.statSuccess]}>
-                    <MoneyText style={[styles.statValue, { color: colors.success }]}>+{formatJod(totalIn)} JOD</MoneyText>
                     <Text style={styles.statLabel}>{strings.fund.totalContributions}</Text>
+                    <MoneyText style={[styles.statValue, { color: colors.success }]}>+{formatJod(totalIn)} JOD</MoneyText>
                   </View>
                   <View style={[styles.statRow, styles.statDanger]}>
-                    <MoneyText style={[styles.statValue, { color: colors.danger }]}>−{formatJod(totalOut)} JOD</MoneyText>
                     <Text style={styles.statLabel}>{strings.fund.totalExpenses}</Text>
+                    <MoneyText style={[styles.statValue, { color: colors.danger }]}>−{formatJod(totalOut)} JOD</MoneyText>
                   </View>
                   <View style={[styles.statRow, net >= 0 ? styles.statNetPositive : styles.statDanger]}>
+                    <Text style={styles.statLabel}>{strings.fund.netChange}</Text>
                     <MoneyText style={[styles.statValueLarge, { color: net >= 0 ? colors.success : colors.danger }]}>
                       {net >= 0 ? '+' : '−'}
                       {formatJod(Math.abs(net))} JOD
                     </MoneyText>
-                    <Text style={styles.statLabel}>{strings.fund.netChange}</Text>
                   </View>
                 </View>
               </Card>
@@ -153,6 +153,7 @@ function createStyles() {
   return StyleSheet.create({
   screen: {
     flex: 1,
+    direction: 'ltr',
     backgroundColor: colors.bg,
   },
   content: {
@@ -170,7 +171,7 @@ function createStyles() {
     textAlign: isRTL() ? 'right' : 'left',
   },
   balanceRow: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     alignItems: 'flex-end',
     gap: 8,
     marginBottom: 6,
@@ -195,7 +196,7 @@ function createStyles() {
     textAlign: isRTL() ? 'right' : 'left',
   },
   subTabs: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     gap: 8,
     marginBottom: 16,
   },
@@ -215,6 +216,7 @@ function createStyles() {
     fontFamily: fonts.semiBold,
     fontSize: 13,
     color: colors.muted,
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   subTabLabelOn: {
     color: '#000',
@@ -239,7 +241,7 @@ function createStyles() {
   statRow: {
     padding: 16,
     borderRadius: radii.lg,
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -270,6 +272,8 @@ function createStyles() {
     fontFamily: fonts.regular,
     fontSize: 13,
     color: colors.muted,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   memberRow: {
     flexDirection: isRTL() ? 'row-reverse' : 'row',
@@ -285,9 +289,11 @@ function createStyles() {
     fontFamily: fonts.bold,
     fontSize: 15,
     color: colors.ink,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   memberTrailing: {
-    flexDirection: 'row',
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
     alignItems: 'center',
     gap: 10,
   },
@@ -309,6 +315,7 @@ function createStyles() {
   statusPillText: {
     fontFamily: fonts.semiBold,
     fontSize: 11,
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   expectedStrip: {
     padding: 18,
@@ -320,6 +327,8 @@ function createStyles() {
     fontFamily: fonts.regular,
     fontSize: 13,
     color: colors.muted,
+    textAlign: isRTL() ? 'right' : 'left',
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   expectedValue: {
     fontSize: 16,

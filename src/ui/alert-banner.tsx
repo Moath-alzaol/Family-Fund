@@ -39,6 +39,7 @@ function createStyles() {
     },
     icon: {
       fontSize: 14,
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
     text: {
       flex: 1,
@@ -46,6 +47,7 @@ function createStyles() {
       fontSize: 13,
       lineHeight: 20,
       textAlign: isRTL() ? 'right' : 'left',
+      writingDirection: isRTL() ? 'rtl' : 'ltr',
     },
     goldText: {
       color: colors.gold,

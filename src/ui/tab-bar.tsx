@@ -106,6 +106,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+    direction: "ltr",
     alignItems: "center",
     backgroundColor: colors.surface,
     borderTopWidth: 1,
