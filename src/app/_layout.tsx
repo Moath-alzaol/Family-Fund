@@ -19,6 +19,10 @@ import { SessionProvider } from '@/hooks/use-session';
 import { initLocale, subscribeToLocale, type Locale } from '@/i18n/locale';
 import { colors } from '@/ui/theme';
 
+SplashScreen.setOptions({
+  duration: 650,
+  fade: true,
+});
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
