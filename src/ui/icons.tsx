@@ -114,3 +114,23 @@ export function PersonPlusIcon({ size = 18, color = '#5E7A9E', strokeWidth = 1.8
     </Svg>
   );
 }
+
+export function ShareIcon({ size = 18, color = '#5E7A9E', strokeWidth = 1.8 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+      <Circle cx="18" cy="5" r="3" />
+      <Circle cx="6" cy="12" r="3" />
+      <Circle cx="18" cy="19" r="3" />
+      <Path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4" />
+    </Svg>
+  );
+}
+
+export function BellIcon({ size = 20, color = '#5E7A9E', strokeWidth = 1.8 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+      <Path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+      <Path d="M10 21h4" />
+    </Svg>
+  );
+}

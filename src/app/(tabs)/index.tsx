@@ -1,21 +1,24 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Share, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { buildBalanceSummary } from '@/domain/balance-summary';
 import { formatJod } from '@/domain/money';
 import { currentPeriod } from '@/domain/period';
 import { useFundBalance, usePersonalBalances } from '@/hooks/use-balances';
 import { useCommitments } from '@/hooks/use-commitments';
 import { useMyProfile, useProfiles } from '@/hooks/use-profiles';
+import { useNotifications } from '@/hooks/use-notifications';
 import { useRequests } from '@/hooks/use-requests';
 import { isRTL } from '@/i18n/locale';
 import { strings } from '@/i18n/strings';
 import { Avatar } from '@/ui/avatar';
 import { Card } from '@/ui/card';
-import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, CrossIcon } from '@/ui/icons';
+import { BellIcon, CheckIcon, ChevronLeftIcon, ChevronRightIcon, CrossIcon, ShareIcon } from '@/ui/icons';
 import { MoneyText } from '@/ui/money-text';
+import { notify } from '@/ui/notify';
 import { ErrorView, LoadingView } from '@/ui/query-state';
 import { colors, fonts } from '@/ui/theme';
 
@@ -34,6 +37,7 @@ export default function HomeScreen() {
   const fund = useFundBalance();
   const commitments = useCommitments(period);
   const pendingRequests = useRequests('pending');
+  const notifications = useNotifications();
   const styles = useMemo(() => createStyles(), []);
 
   if (myProfile.isLoading || profiles.isLoading || balances.isLoading || fund.isLoading) return <LoadingView />;
@@ -47,6 +51,23 @@ export default function HomeScreen() {
   const collectedFils = (commitments.data ?? []).reduce((sum, c) => sum + c.paid_fils, 0);
   const remainingFils = expectedFils - collectedFils;
   const progressPct = expectedFils > 0 ? Math.round((collectedFils / expectedFils) * 100) : 0;
+  const unreadNotifications = notifications.data?.filter((notification) => !notification.read_at).length ?? 0;
+
+  const shareBalanceSummary = async () => {
+    const message = buildBalanceSummary(
+      fund.data ?? 0,
+      (profiles.data ?? []).map((profile) => ({
+        name: profile.display_name,
+        balanceFils: balanceOf(profile.id),
+      }))
+    );
+
+    try {
+      await Share.share({ message, title: strings.home.balanceSummaryTitle });
+    } catch {
+      notify(strings.home.shareSummaryError);
+    }
+  };
 
   const unpaidMembers = (profiles.data ?? []).filter((p) => {
     const c = commitmentOf(p.id);
@@ -61,6 +82,18 @@ export default function HomeScreen() {
             <Text style={styles.greeting}>{greeting()}</Text>
             <Text style={styles.name}>{myProfile.data.display_name}</Text>
           </View>
+          <TouchableOpacity
+            accessibilityLabel={strings.notifications.title}
+            style={styles.notificationButton}
+            onPress={() => router.push('/notifications')}
+          >
+            <BellIcon size={21} color={colors.ink} strokeWidth={2} />
+            {unreadNotifications > 0 && (
+              <View style={styles.notificationBadge}>
+                <Text style={styles.notificationBadgeText}>{Math.min(unreadNotifications, 99)}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
         </View>
 
         <View style={styles.body}>
@@ -93,6 +126,11 @@ export default function HomeScreen() {
               )}
             </View>
           </View>
+
+          <TouchableOpacity style={styles.shareSummaryButton} onPress={() => void shareBalanceSummary()}>
+            <ShareIcon size={18} color={colors.gold} strokeWidth={2} />
+            <Text style={styles.shareSummaryText}>{strings.home.shareSummaryButton}</Text>
+          </TouchableOpacity>
 
           <Card>
             <Text style={styles.sectionLabel}>{strings.home.commitmentsLabel}</Text>
@@ -232,6 +270,35 @@ function createStyles() {
     color: colors.ink,
     textAlign: isRTL() ? 'right' : 'left',
   },
+  notificationButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  notificationBadge: {
+    position: 'absolute',
+    top: -5,
+    right: -5,
+    minWidth: 20,
+    height: 20,
+    paddingHorizontal: 5,
+    borderRadius: 10,
+    backgroundColor: colors.danger,
+    borderWidth: 2,
+    borderColor: colors.bg,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  notificationBadgeText: {
+    color: '#fff',
+    fontFamily: fonts.bold,
+    fontSize: 10,
+  },
   body: {
     paddingHorizontal: 20,
     gap: 14,
@@ -285,6 +352,24 @@ function createStyles() {
     fontSize: 16,
     color: colors.muted,
     marginBottom: 4,
+  },
+  shareSummaryButton: {
+    minHeight: 50,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(201,168,76,0.34)',
+    backgroundColor: colors.goldDim,
+    flexDirection: isRTL() ? 'row-reverse' : 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 9,
+    paddingHorizontal: 16,
+  },
+  shareSummaryText: {
+    fontFamily: fonts.bold,
+    fontSize: 14,
+    color: colors.gold,
+    writingDirection: isRTL() ? 'rtl' : 'ltr',
   },
   progressSection: {
     marginTop: 20,

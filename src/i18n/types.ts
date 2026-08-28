@@ -43,6 +43,11 @@ export interface Strings {
     viewAll: string;
     noPendingTitle: string;
     noPendingSubtitle: string;
+    shareSummaryButton: string;
+    balanceSummaryTitle: string;
+    fundBalanceSummaryLabel: string;
+    totalPersonalBalancesLabel: string;
+    shareSummaryError: string;
   };
 
   requestsScreen: {
@@ -54,6 +59,22 @@ export interface Strings {
     emptyTitle: string;
     emptyPendingSubtitle: string;
     emptyOtherSubtitle: string;
+  };
+
+  notifications: {
+    title: string;
+    markAllRead: string;
+    emptyTitle: string;
+    emptySubtitle: string;
+    createdTitle: string;
+    createdBody: (requesterName: string, requestType: string) => string;
+    autoExecutedTitle: string;
+    autoExecutedBody: (requesterName: string, requestType: string) => string;
+    approvedTitle: string;
+    approvedBody: (actorName: string, requestType: string) => string;
+    rejectedTitle: string;
+    rejectedBody: (actorName: string, requestType: string) => string;
+    adminFallback: string;
   };
 
   fund: {

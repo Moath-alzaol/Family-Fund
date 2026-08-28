@@ -42,3 +42,6 @@ example
 # generated native folders
 /ios
 /android
+
+# Independently hosted support-site workspace
+/app-store/support-site/

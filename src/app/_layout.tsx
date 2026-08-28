@@ -15,7 +15,9 @@ import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { queryClient } from '@/api/query-client';
+import { useNotificationCoordinator } from '@/hooks/use-notifications';
 import { SessionProvider } from '@/hooks/use-session';
+import { useSession } from '@/hooks/use-session';
 import { initLocale, subscribeToLocale, type Locale } from '@/i18n/locale';
 import { colors } from '@/ui/theme';
 
@@ -24,6 +26,12 @@ SplashScreen.setOptions({
   fade: true,
 });
 SplashScreen.preventAutoHideAsync();
+
+function NotificationCoordinator() {
+  const { session } = useSession();
+  useNotificationCoordinator(session?.user.id);
+  return null;
+}
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -57,6 +65,7 @@ export default function RootLayout() {
         <StatusBar style="light" />
         <QueryClientProvider client={queryClient}>
           <SessionProvider>
+            <NotificationCoordinator />
             <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }} />
           </SessionProvider>
         </QueryClientProvider>

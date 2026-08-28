@@ -1,6 +1,7 @@
 {
   "expo": {
-    "name": "family-fund-app",
+    "name": "Family Fund",
+    "description": "A private family fund manager for transparent contributions, balances, requests, and shared expenses.",
     "slug": "family-fund-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -10,7 +11,11 @@
     "backgroundColor": "#080E1A",
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.anonymous.family-fund-app"
+      "bundleIdentifier": "com.family.fund",
+      "buildNumber": "1",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -40,7 +45,14 @@
           }
         }
       ],
-      "expo-font"
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "color": "#C9A84C",
+          "defaultChannel": "family-fund"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

@@ -60,6 +60,11 @@ export const ar: Strings = {
     viewAll: 'عرض الكل',
     noPendingTitle: 'لا توجد طلبات معلقة',
     noPendingSubtitle: 'كل شيء على ما يرام',
+    shareSummaryButton: 'مشاركة ملخص الأرصدة',
+    balanceSummaryTitle: 'ملخص أرصدة صندوق العائلة',
+    fundBalanceSummaryLabel: 'رصيد الصندوق',
+    totalPersonalBalancesLabel: 'مجموع الأرصدة الشخصية',
+    shareSummaryError: 'تعذّرت مشاركة الملخص. حاول مرة أخرى.',
   },
 
   requestsScreen: {
@@ -71,6 +76,22 @@ export const ar: Strings = {
     emptyTitle: 'لا توجد طلبات',
     emptyPendingSubtitle: 'لا توجد طلبات معلقة — كل شيء مُراجَع',
     emptyOtherSubtitle: 'لا توجد طلبات في هذه الفئة',
+  },
+
+  notifications: {
+    title: 'الإشعارات',
+    markAllRead: 'تحديد الكل كمقروء',
+    emptyTitle: 'لا توجد إشعارات',
+    emptySubtitle: 'ستظهر هنا تحديثات الطلبات الجديدة والقرارات عليها',
+    createdTitle: 'طلب جديد',
+    createdBody: (requesterName, requestType) => `${requesterName} أرسل طلب ${requestType}`,
+    autoExecutedTitle: 'عملية جديدة منفّذة',
+    autoExecutedBody: (requesterName, requestType) => `${requesterName} نفّذ ${requestType} مباشرةً`,
+    approvedTitle: 'تم اعتماد طلبك',
+    approvedBody: (actorName, requestType) => `${actorName} اعتمد طلب ${requestType}`,
+    rejectedTitle: 'تم رفض طلبك',
+    rejectedBody: (actorName, requestType) => `${actorName} رفض طلب ${requestType}`,
+    adminFallback: 'المسؤول',
   },
 
   fund: {

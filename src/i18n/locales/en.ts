@@ -60,6 +60,11 @@ export const en: Strings = {
     viewAll: 'View All',
     noPendingTitle: 'No pending requests',
     noPendingSubtitle: 'Everything is up to date',
+    shareSummaryButton: 'Share Balance Summary',
+    balanceSummaryTitle: 'Family Fund Balance Summary',
+    fundBalanceSummaryLabel: 'Fund balance',
+    totalPersonalBalancesLabel: 'Total personal balances',
+    shareSummaryError: 'Could not share the summary. Please try again.',
   },
 
   requestsScreen: {
@@ -71,6 +76,22 @@ export const en: Strings = {
     emptyTitle: 'No requests',
     emptyPendingSubtitle: 'No pending requests — everything is reviewed',
     emptyOtherSubtitle: 'No requests in this category',
+  },
+
+  notifications: {
+    title: 'Notifications',
+    markAllRead: 'Mark all as read',
+    emptyTitle: 'No notifications',
+    emptySubtitle: 'New requests and decisions will appear here',
+    createdTitle: 'New request',
+    createdBody: (requesterName, requestType) => `${requesterName} submitted a ${requestType} request`,
+    autoExecutedTitle: 'New completed operation',
+    autoExecutedBody: (requesterName, requestType) => `${requesterName} completed ${requestType} immediately`,
+    approvedTitle: 'Your request was approved',
+    approvedBody: (actorName, requestType) => `${actorName} approved your ${requestType} request`,
+    rejectedTitle: 'Your request was rejected',
+    rejectedBody: (actorName, requestType) => `${actorName} rejected your ${requestType} request`,
+    adminFallback: 'The admin',
   },
 
   fund: {
