@@ -1,6 +1,6 @@
 # تسليم مالك حساب Apple Developer
 
-هذا الملف مخصص لمالك حساب Apple Developer أو مستخدم مدعو بصلاحية تسمح بإنشاء بيانات التوقيع ورفع نسخ iOS.
+هذا الملف مخصص لمالك حساب Apple Developer أو مستخدم مدعو بصلاحية تسمح بإنشاء بيانات التوقيع ورفع نسخ iOS. دوره محصور في Apple/EAS والتوقيع والرفع؛ لا يحتاج حسابًا أو صلاحيات أو دخولًا إلى Supabase.
 
 ## ما تم تجهيزه
 
@@ -13,28 +13,18 @@
 
 ## أوامر البناء والرفع
 
-قبل البناء، تأكد أن migration التالي مطبق على قاعدة Supabase الإنتاجية:
-
-`supabase/migrations/20260828000001_notifications.sql`
-
-إذا كان المشروع مربوطًا مسبقًا بمشروع Supabase الصحيح، يمكن للمستخدم المخول تشغيل:
-
-```bash
-npx supabase db push
-```
-
-راجع اسم مشروع Supabase المستهدف قبل الموافقة على تطبيق أي migration.
-
 نفّذ الأوامر التالية من جذر المشروع:
 
 ```bash
+npm ci
 npx eas-cli@latest login
-npx eas-cli@latest init
 npx eas-cli@latest build --platform ios --profile production
 npx eas-cli@latest submit --platform ios --profile production
 ```
 
-إذا كان المشروع مربوطًا مسبقًا بمشروع EAS، تجاوز أمر `init`. أثناء البناء سيطلب EAS تسجيل دخول Apple والتحقق الثنائي عند الحاجة، ثم إعداد شهادة التوزيع وملف Provisioning Profile. يجب أن ينفّذ هذه الخطوات مالك الحساب أو مستخدم Apple مخوّل.
+يجب أن يربط المطور المشروع بمشروع EAS ويجهز متغيرات التشغيل العامة قبل تسليمه للمالك. أثناء البناء سيطلب EAS تسجيل دخول Apple والتحقق الثنائي عند الحاجة، ثم إعداد شهادة التوزيع وملف Provisioning Profile. يجب أن ينفّذ هذه الخطوات مالك الحساب أو مستخدم Apple مخوّل.
+
+لا تشغّل أي أمر `supabase`، ولا تطلب Supabase Dashboard، ولا تستلم `service_role` key أو كلمة مرور قاعدة البيانات. أي migration أو إعداد backend هو مسؤولية مطور التطبيق/مسؤول Supabase وليس مالك Apple.
 
 يمكن اختصار آخر خطوتين بعد التأكد من صحة بيانات التوقيع باستخدام:
 

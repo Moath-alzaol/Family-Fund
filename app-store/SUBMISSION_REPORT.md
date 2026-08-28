@@ -14,7 +14,25 @@ App Store Connect App ID: `6806254501`
 - commit تجهيز التطبيق وملفات App Store: `dd1c331dcd3af825de4a126811dc3eb9c6780ef2`
 - تم التحقق أن `HEAD` و`origin/main` يشيران إلى نفس الـcommit بعد الرفع.
 - ملفات `.env` والشهادات ومفاتيح التوقيع و`node_modules` غير مرفوعة.
+- قيم تشغيل Supabase العامة ليست في GitHub؛ يجب على مطور التطبيق تجهيزها في بيئة EAS قبل تسليم البناء لمالك Apple، دون منحه دخولًا إلى Supabase.
 - مجلد مصدر موقع الدعم مستقل عن مستودع التطبيق لأنه منشور عبر مستودع الاستضافة الخاص به؛ رابط الموقع العام موثق أدناه.
+
+## فصل المسؤوليات
+
+### مطور التطبيق/مسؤول Supabase
+
+- تطبيق migrations على قاعدة الإنتاج، بما فيها `supabase/migrations/20260828000001_notifications.sql`.
+- تجهيز `EXPO_PUBLIC_SUPABASE_URL` و`EXPO_PUBLIC_SUPABASE_ANON_KEY` في بيئة بناء EAS.
+- اختبار اتصال النسخة التجريبية بالـbackend قبل تسليمها للمالك.
+- الاحتفاظ بأي مفاتيح إدارية مثل `service_role` وكلمات مرور قاعدة البيانات وعدم مشاركتها مع مالك Apple.
+
+### مالك حساب Apple
+
+- تسجيل الدخول إلى Apple أثناء عملية EAS عند الطلب.
+- إنشاء/اعتماد شهادة التوزيع وProvisioning Profile.
+- بناء نسخة iOS ورفعها إلى App Store Connect.
+- اختيار الـBuild وإرسال الإصدار للمراجعة بعد اكتمال البيانات.
+- لا يحتاج أي حساب أو صلاحية أو دخول إلى Supabase، ولا يشغل أوامر Supabase.
 
 ## ما تم إنجازه في App Store Connect
 
@@ -78,8 +96,8 @@ App Store Connect App ID: `6806254501`
 
 1. في إصدار iOS 1.0 أدخل Support URL: `https://family-fund-support.moath-alzaol603707.chatgpt.site#support` وMarketing URL: `https://family-fund-support.moath-alzaol603707.chatgpt.site` ثم اضغط Save.
 2. في App Privacy > Privacy Policy أدخل: `https://family-fund-support.moath-alzaol603707.chatgpt.site#privacy` ثم اضغط Save.
-3. التأكد أن migration الإشعارات `supabase/migrations/20260828000001_notifications.sql` مطبق على قاعدة Supabase الإنتاجية.
-4. مالك الحساب أو مستخدم Apple مخول يشغل أوامر EAS المذكورة في `ACCOUNT_HOLDER_HANDOFF.md`.
+3. مطور التطبيق، وليس مالك Apple، يؤكد أن migration الإشعارات مطبق وأن بيئة EAS تحتوي قيم التشغيل العامة اللازمة.
+4. مالك الحساب أو مستخدم Apple مخول يشغل أوامر EAS المذكورة في `ACCOUNT_HOLDER_HANDOFF.md` دون أي دخول إلى Supabase.
 5. رفع النسخة الموقعة وانتظار معالجتها.
 6. تحديد الـBuild داخل إصدار iOS 1.0.
 7. التأكد من إمكانية حذف الحساب داخل التطبيق وفق متطلبات Apple، لا سيما إذا كان إنشاء الحساب متاحًا للمستخدم.
