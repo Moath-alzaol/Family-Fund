@@ -11,7 +11,7 @@ App Store Connect App ID: `6806254501`
 
 - المستودع: `https://github.com/Moath-alzaol/Family-Fund`
 - الفرع: `main`
-- commit تجهيز التطبيق وملفات App Store: `dd1c331dcd3af825de4a126811dc3eb9c6780ef2`
+- آخر commit لتجهيز التطبيق وتعليمات تسليم المالك وقت إعداد هذا التقرير: `6077408`
 - تم التحقق أن `HEAD` و`origin/main` يشيران إلى نفس الـcommit بعد الرفع.
 - ملفات `.env` والشهادات ومفاتيح التوقيع و`node_modules` غير مرفوعة.
 - قيم تشغيل Supabase العامة ليست في GitHub؛ يجب على مطور التطبيق تجهيزها في بيئة EAS قبل تسليم البناء لمالك Apple، دون منحه دخولًا إلى Supabase.
@@ -21,7 +21,7 @@ App Store Connect App ID: `6806254501`
 
 ### مطور التطبيق/مسؤول Supabase
 
-- تطبيق migrations على قاعدة الإنتاج، بما فيها `supabase/migrations/20260828000001_notifications.sql`.
+- تم تطبيق migration الإشعارات `supabase/migrations/20260828000001_notifications.sql` على قاعدة الإنتاج والتحقق منه بتاريخ 28 أغسطس 2026.
 - تجهيز `EXPO_PUBLIC_SUPABASE_URL` و`EXPO_PUBLIC_SUPABASE_ANON_KEY` في بيئة بناء EAS.
 - اختبار اتصال النسخة التجريبية بالـbackend قبل تسليمها للمالك.
 - الاحتفاظ بأي مفاتيح إدارية مثل `service_role` وكلمات مرور قاعدة البيانات وعدم مشاركتها مع مالك Apple.
@@ -91,13 +91,14 @@ App Store Connect App ID: `6806254501`
 - الصور: تم التحقق من أبعاد الصور الست وتنسيقها وعدم وجود Alpha.
 - الأيقونة: تم التحقق من المقاس والتنسيق وعدم وجود Alpha.
 - اختبارات المشروع: 26 اختبارًا نجح، و15 اختبارًا تم تخطيه. فشلت 4 اختبارات تكامل فقط لأن Supabase CLI والخدمة المحلية غير متاحين في بيئة الفحص، وليس بسبب assertion فاشل في منطق الاختبار.
+- قاعدة Supabase الإنتاجية: تم تسجيل migration رقم `20260828000001`، وإنشاء جدول `public.notifications` والدالة والـtrigger، وإضافة الجدول إلى Supabase Realtime، والتحقق من وجود سياستين RLS. كانت نتيجة الفحص النهائي: جميع المكونات `true` وعدد السياسات `2`.
 - فحص lint الكامل لم يكتمل لأن إعداد ESLint غير موجود وكان Expo يحاول تثبيت الحزم المطلوبة دون اتصال شبكي.
 
 ## المتبقي قبل المراجعة
 
 1. في إصدار iOS 1.0 أدخل Support URL: `https://family-fund-support.moath-alzaol603707.chatgpt.site#support` وMarketing URL: `https://family-fund-support.moath-alzaol603707.chatgpt.site` ثم اضغط Save.
 2. في App Privacy > Privacy Policy أدخل: `https://family-fund-support.moath-alzaol603707.chatgpt.site#privacy` ثم اضغط Save.
-3. مطور التطبيق، وليس مالك Apple، يؤكد أن migration الإشعارات مطبق وأن بيئة EAS تحتوي قيم التشغيل العامة اللازمة.
+3. مطور التطبيق، وليس مالك Apple، يجهز قيم التشغيل العامة اللازمة داخل بيئة EAS؛ تم تطبيق migration الإشعارات والتحقق منه بالفعل.
 4. مالك الحساب أو مستخدم Apple مخول يشغل أوامر EAS المذكورة في `ACCOUNT_HOLDER_HANDOFF.md` دون أي دخول إلى Supabase.
 5. رفع النسخة الموقعة وانتظار معالجتها.
 6. تحديد الـBuild داخل إصدار iOS 1.0.
