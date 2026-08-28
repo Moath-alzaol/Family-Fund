@@ -78,13 +78,14 @@ App Store Connect App ID: `6806254501`
 
 1. في إصدار iOS 1.0 أدخل Support URL: `https://family-fund-support.moath-alzaol603707.chatgpt.site#support` وMarketing URL: `https://family-fund-support.moath-alzaol603707.chatgpt.site` ثم اضغط Save.
 2. في App Privacy > Privacy Policy أدخل: `https://family-fund-support.moath-alzaol603707.chatgpt.site#privacy` ثم اضغط Save.
-3. مالك الحساب أو مستخدم Apple مخول يشغل أوامر EAS المذكورة في `ACCOUNT_HOLDER_HANDOFF.md`.
-4. رفع النسخة الموقعة وانتظار معالجتها.
-5. تحديد الـBuild داخل إصدار iOS 1.0.
-6. التأكد من إمكانية حذف الحساب داخل التطبيق وفق متطلبات Apple، لا سيما إذا كان إنشاء الحساب متاحًا للمستخدم.
-7. فحص النسخة المرفوعة باستخدام حساب المراجعة.
-8. الضغط على **Add for Review** بعد موافقة المالك فقط.
-9. تقديم طلب Unlisted App Distribution بعد إرسال التطبيق للمراجعة.
+3. التأكد أن migration الإشعارات `supabase/migrations/20260828000001_notifications.sql` مطبق على قاعدة Supabase الإنتاجية.
+4. مالك الحساب أو مستخدم Apple مخول يشغل أوامر EAS المذكورة في `ACCOUNT_HOLDER_HANDOFF.md`.
+5. رفع النسخة الموقعة وانتظار معالجتها.
+6. تحديد الـBuild داخل إصدار iOS 1.0.
+7. التأكد من إمكانية حذف الحساب داخل التطبيق وفق متطلبات Apple، لا سيما إذا كان إنشاء الحساب متاحًا للمستخدم.
+8. فحص النسخة المرفوعة باستخدام حساب المراجعة.
+9. الضغط على **Add for Review** بعد موافقة المالك فقط.
+10. تقديم طلب Unlisted App Distribution بعد إرسال التطبيق للمراجعة.
 
 ## أشياء لم تُنفذ عمدًا
 
