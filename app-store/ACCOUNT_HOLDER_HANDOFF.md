@@ -13,18 +13,54 @@
 
 ## أوامر البناء والرفع
 
-نفّذ الأوامر التالية من جذر المشروع:
+### 1. تنزيل المشروع
 
 ```bash
+git clone https://github.com/Moath-alzaol/Family-Fund.git
+cd Family-Fund
+git checkout main
+git pull origin main
 npm ci
+```
+
+إذا كان المشروع موجودًا مسبقًا، يكفي الدخول إلى المجلد وتشغيل `git pull origin main` ثم `npm ci`.
+
+### 2. ربط EAS
+
+```bash
 npx eas-cli@latest login
+npx eas-cli@latest init
+```
+
+إذا ظهر أن المشروع مربوط مسبقًا بـEAS، لا تنشئ مشروعًا ثانيًا. إذا أضاف `eas init` قيمة `extra.eas.projectId` إلى إعدادات Expo، اعمل commit وارفعه إلى `main` لأن لديك صلاحية على الـrepo.
+
+### 3. التأكد من متغيرات بناء production
+
+التطبيق يحتاج قيمتي التشغيل العامتين التاليتين داخل بيئة EAS المسماة `production`:
+
+- `EXPO_PUBLIC_SUPABASE_URL`
+- `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+
+هذه القيم جزء من تطبيق العميل وليست صلاحية Supabase إدارية. يحصل المالك على القيم من مطور التطبيق دون دخول Supabase، ثم يضيفها إلى EAS بالأوامر التالية:
+
+```bash
+npx eas-cli@latest env:set production --name EXPO_PUBLIC_SUPABASE_URL --value "VALUE_FROM_DEVELOPER" --visibility plaintext
+npx eas-cli@latest env:set production --name EXPO_PUBLIC_SUPABASE_ANON_KEY --value "VALUE_FROM_DEVELOPER" --visibility plaintext
+npx eas-cli@latest env:list --environment production
+```
+
+لا تستخدم `service_role` key هنا. المطلوب فقط المفتاح العام `anon` المستخدم أصلًا داخل تطبيق الهاتف.
+
+### 4. بناء ورفع iOS
+
+```bash
 npx eas-cli@latest build --platform ios --profile production
 npx eas-cli@latest submit --platform ios --profile production
 ```
 
-يجب أن يربط المطور المشروع بمشروع EAS ويجهز متغيرات التشغيل العامة قبل تسليمه للمالك. أثناء البناء سيطلب EAS تسجيل دخول Apple والتحقق الثنائي عند الحاجة، ثم إعداد شهادة التوزيع وملف Provisioning Profile. يجب أن ينفّذ هذه الخطوات مالك الحساب أو مستخدم Apple مخوّل.
+أثناء البناء سيطلب EAS تسجيل دخول Apple والتحقق الثنائي عند الحاجة، ثم إعداد شهادة التوزيع وملف Provisioning Profile. يجب أن ينفّذ هذه الخطوات مالك الحساب أو مستخدم Apple مخوّل.
 
-لا تشغّل أي أمر `supabase`، ولا تطلب Supabase Dashboard، ولا تستلم `service_role` key أو كلمة مرور قاعدة البيانات. أي migration أو إعداد backend هو مسؤولية مطور التطبيق/مسؤول Supabase وليس مالك Apple.
+لا تشغّل أي أمر `supabase`، ولا تطلب Supabase Dashboard، ولا تستلم `service_role` key أو كلمة مرور قاعدة البيانات. أي migration أو إعداد backend هو مسؤولية مطور التطبيق/مسؤول Supabase وليس مالك Apple. أوامر `eas env:set` أعلاه تخص منصة Expo للبناء ولا تمنح دخولًا إلى Supabase.
 
 يمكن اختصار آخر خطوتين بعد التأكد من صحة بيانات التوقيع باستخدام:
 
