@@ -15,10 +15,10 @@ A system of record for a family fund shared by three brothers. It does not move 
 
 ## Invariants
 
-1. A personal balance can never go negative. Any operation that would make it negative is rejected.
-2. The fund balance can never go negative.
+1. Personal balances may go negative when a withdrawal or full monthly contribution exceeds the available balance.
+2. The shared fund balance may go negative when an approved expense exceeds the available fund balance.
 3. Monthly commitments are never deducted automatically. Payment happens through a request the admin approves.
-4. No partial payment. If someone's balance is less than the full commitment, nothing is deducted, nothing goes to the fund, the commitment stays unpaid.
+4. No partial payment. A commitment is paid only as the exact full amount; that full payment may make the personal balance negative.
 5. Members cannot approve anything — not their own requests, not anyone else's.
 6. Admin (Moath) withdraws his own personal money directly, with no approval, but it is still recorded as a request in `approved` state with an audit note.
 7. Rejection never moves money, and must store: reason, who rejected, when.
@@ -54,7 +54,7 @@ Copy `.env.example` to `.env` and point it at the local stack to run the app aga
 ## Client error mapping
 
 RPC functions raise custom SQLSTATEs instead of generic Postgres errors, mapped in `src/domain/errors.ts`:
-`FFR01` insufficient personal balance · `FFR02` insufficient balance for a full contribution · `FFR03` commitment already paid / amount mismatch · `FFR04` insufficient fund balance · `FFR05` admin-only action · `FFR06` invalid input · `FFR07` request not found / wrong state · `FFR08` not authenticated.
+`FFR01`, `FFR02`, and `FFR04` are legacy insufficient-balance codes retained for backward compatibility; current operations permit negative balances. Active codes are `FFR03` commitment already paid / amount mismatch · `FFR05` admin-only action · `FFR06` invalid input · `FFR07` request not found / wrong state · `FFR08` not authenticated.
 
 The server's raised *message* is always Arabic (SQL has no notion of UI locale) — never show `error.message` from an RPC call to the user. Always go through `localizeError(error)` (`src/domain/errors.ts`), which maps the code to a fully localized string via `strings.errors`. Every RPC call site in the app does this; keep new ones consistent.
 

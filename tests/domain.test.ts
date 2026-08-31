@@ -43,8 +43,8 @@ describe('validateRequestAmount', () => {
     expect(validateRequestAmount('deposit', null, 100_000, 100_000)).not.toBeNull();
   });
 
-  test('blocks a withdrawal larger than the personal balance', () => {
-    expect(validateRequestAmount('withdrawal', 500_000, 400_000, 0)).not.toBeNull();
+  test('allows a withdrawal larger than the personal balance', () => {
+    expect(validateRequestAmount('withdrawal', 500_000, 400_000, 0)).toBeNull();
   });
 
   test('allows a withdrawal within the personal balance', () => {
@@ -57,10 +57,10 @@ describe('validateRequestAmount', () => {
     ).not.toBeNull();
   });
 
-  test('blocks a contribution when the balance can’t cover the full due amount', () => {
+  test('allows a full contribution even when it makes the personal balance negative', () => {
     expect(
       validateRequestAmount('contribution', 50_000, 30_000, 0, { dueFils: 50_000 })
-    ).not.toBeNull();
+    ).toBeNull();
   });
 
   test('blocks a contribution amount that does not match what is due', () => {
@@ -75,8 +75,8 @@ describe('validateRequestAmount', () => {
     ).toBeNull();
   });
 
-  test('blocks an expense larger than the fund balance', () => {
-    expect(validateRequestAmount('expense', 300_000, 0, 200_000)).not.toBeNull();
+  test('allows an expense larger than the fund balance', () => {
+    expect(validateRequestAmount('expense', 300_000, 0, 200_000)).toBeNull();
   });
 
   test('allows an expense within the fund balance', () => {

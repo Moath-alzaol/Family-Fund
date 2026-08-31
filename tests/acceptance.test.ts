@@ -21,21 +21,22 @@ beforeAll(() => {
   execSync('supabase db reset', { stdio: 'inherit' });
 }, 60000);
 
-// §6.1 — insufficient balance blocks the request before it's created.
-test('1. withdrawal over balance is blocked before creation, error names available balance', async () => {
+// §6.1 — a withdrawal may exceed the personal balance and becomes negative on approval.
+test('1. withdrawal over balance is allowed and creates a negative personal balance', async () => {
   const admin = serviceClient();
   await setPersonalBalance(admin, HANI_ID, 400_000);
   const hani = await asHani();
 
-  const { data, error } = await hani.rpc('create_request', {
+  const created = await hani.rpc('create_request', {
     p_type: 'withdrawal',
     p_amount_fils: 500_000,
   });
 
-  expect(data).toBeNull();
-  expect(error?.code).toBe('FFR01');
-  expect(error?.message).toContain('400');
-  expect(await personalBalance(admin, HANI_ID)).toBe(400_000);
+  expect(created.error).toBeNull();
+  const moath = await asMoath();
+  const approved = await moath.rpc('approve_request', { p_request_id: created.data!.id });
+  expect(approved.error).toBeNull();
+  expect(await personalBalance(admin, HANI_ID)).toBe(-100_000);
 });
 
 // §6.2 — a valid withdrawal request is created pending, balance untouched.
@@ -116,21 +117,24 @@ test('5. rejecting with an empty reason errors', async () => {
   expect(error?.code).toBe('FFR06');
 });
 
-// §6.6 — no partial payment: an insufficient balance blocks the whole contribution.
-test('6. contribution blocked when balance is under the full commitment — no partial transfer', async () => {
+// §6.6 — a full contribution may overdraw the personal balance; partial payment stays disallowed.
+test('6. full contribution can create a negative personal balance', async () => {
   const admin = serviceClient();
   await setPersonalBalance(admin, MOHAMMED_ID, 30_000);
   await admin.rpc('ensure_commitments_for_period', { p_period: PERIOD });
   const mohammed = await asMohammed();
 
-  const { error } = await mohammed.rpc('create_request', {
+  const created = await mohammed.rpc('create_request', {
     p_type: 'contribution',
     p_amount_fils: 50_000,
     p_period: PERIOD,
   });
 
-  expect(error?.code).toBe('FFR02');
-  expect(await personalBalance(admin, MOHAMMED_ID)).toBe(30_000);
+  expect(created.error).toBeNull();
+  const moath = await asMoath();
+  const approved = await moath.rpc('approve_request', { p_request_id: created.data!.id });
+  expect(approved.error).toBeNull();
+  expect(await personalBalance(admin, MOHAMMED_ID)).toBe(-20_000);
 
   const { data: commitment } = await admin
     .from('commitments')
@@ -138,7 +142,7 @@ test('6. contribution blocked when balance is under the full commitment — no p
     .eq('profile_id', MOHAMMED_ID)
     .eq('period', PERIOD)
     .single();
-  expect(commitment?.paid_fils).toBe(0);
+  expect(commitment?.paid_fils).toBe(50_000);
 });
 
 // §6.7 — approving a contribution writes both ledger legs and marks it paid.
@@ -218,24 +222,17 @@ test('10. admin withdrawal within balance auto-executes', async () => {
   expect(await personalBalance(admin, MOATH_ID)).toBe(400_000);
 });
 
-// §6.11 — an expense over the fund is blocked; an approved one only touches the fund.
-test('11. expense over fund balance is blocked; an approved expense leaves personal balances untouched', async () => {
+// §6.11 — an approved expense may overdraw the fund and only touches the fund.
+test('11. expense can overdraw the fund while personal balances remain unchanged', async () => {
   const admin = serviceClient();
   await setFundBalance(admin, 200_000);
   await setPersonalBalance(admin, HANI_ID, 400_000);
   const hani = await asHani();
   const moath = await asMoath();
 
-  const blocked = await hani.rpc('create_request', {
-    p_type: 'expense',
-    p_amount_fils: 300_000,
-    p_beneficiary: 'صيانة البيت',
-  });
-  expect(blocked.error?.code).toBe('FFR04');
-
   const created = await hani.rpc('create_request', {
     p_type: 'expense',
-    p_amount_fils: 150_000,
+    p_amount_fils: 350_000,
     p_beneficiary: 'صيانة البيت',
   });
   expect(created.error).toBeNull();
@@ -244,12 +241,12 @@ test('11. expense over fund balance is blocked; an approved expense leaves perso
   const { error } = await moath.rpc('approve_request', { p_request_id: created.data!.id });
   expect(error).toBeNull();
 
-  expect(await fundBalance(admin)).toBe(50_000);
+  expect(await fundBalance(admin)).toBe(-150_000);
   expect(await personalBalance(admin, HANI_ID)).toBe(balanceBeforeApproval);
 });
 
-// §6.12 — re-validation at approval time: balance drifted below the amount since creation.
-test('12. approval fails if the balance dropped below the amount after the request was created', async () => {
+// §6.12 — approval remains valid even if the personal balance drops after creation.
+test('12. approval can overdraw a balance that dropped after request creation', async () => {
   const admin = serviceClient();
   await setPersonalBalance(admin, HANI_ID, 500_000);
   const hani = await asHani();
@@ -262,11 +259,11 @@ test('12. approval fails if the balance dropped below the amount after the reque
   await setPersonalBalance(admin, HANI_ID, 100_000);
 
   const { error } = await moath.rpc('approve_request', { p_request_id: requestId });
-  expect(error?.code).toBe('FFR01');
+  expect(error).toBeNull();
 
   const { data: request } = await admin.from('requests').select('*').eq('id', requestId).single();
-  expect(request?.status).toBe('pending');
-  expect(await personalBalance(admin, HANI_ID)).toBe(100_000);
+  expect(request?.status).toBe('approved');
+  expect(await personalBalance(admin, HANI_ID)).toBe(-300_000);
 });
 
 // §6.13 — RLS denies any direct client mutation of ledger_entries.

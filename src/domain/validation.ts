@@ -12,32 +12,21 @@ export interface ContributionContext {
 export function validateRequestAmount(
   type: RequestType,
   amountFils: number | null,
-  balanceFils: number,
-  fundFils: number,
+  _balanceFils: number,
+  _fundFils: number,
   contribution?: ContributionContext
 ): string | null {
   if (!amountFils || amountFils <= 0) {
     return strings.validation.amountRequired;
   }
 
-  if (type === 'withdrawal' && amountFils > balanceFils) {
-    return strings.validation.withdrawalInsufficient(formatJod(balanceFils));
-  }
-
   if (type === 'contribution' && contribution) {
     if (contribution.dueFils <= 0) {
       return strings.validation.contributionAlreadyPaid;
     }
-    if (amountFils > balanceFils) {
-      return strings.validation.contributionInsufficientBalance(formatJod(balanceFils));
-    }
     if (amountFils !== contribution.dueFils) {
       return strings.validation.contributionAmountMismatch(formatJod(contribution.dueFils));
     }
-  }
-
-  if (type === 'expense' && amountFils > fundFils) {
-    return strings.validation.expenseInsufficientFund(formatJod(fundFils));
   }
 
   return null;
