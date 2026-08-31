@@ -222,6 +222,7 @@ export type Database = {
           display_name_en: string | null
           id: string
           is_active: boolean
+          is_test_account: boolean
           monthly_commitment_fils: number
           role: string
         }
@@ -231,6 +232,7 @@ export type Database = {
           display_name_en?: string | null
           id: string
           is_active?: boolean
+          is_test_account?: boolean
           monthly_commitment_fils: number
           role: string
         }
@@ -240,6 +242,7 @@ export type Database = {
           display_name_en?: string | null
           id?: string
           is_active?: boolean
+          is_test_account?: boolean
           monthly_commitment_fils?: number
           role?: string
         }

@@ -1,5 +1,5 @@
--- Local/dev seed: the three brothers, matching the brief's worked example.
--- Password for all three accounts locally is: password123
+-- Local/dev seed: the three brothers plus a hidden app-review account.
+-- Password for all four accounts locally is: password123
 
 insert into auth.users (
   instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -14,7 +14,10 @@ insert into auth.users (
    '{"provider":"email","providers":["email"]}', '{"display_name":"حمادة","display_name_en":"Hamada"}', now(), now(), '', '', '', ''),
   ('00000000-0000-0000-0000-000000000000', '33333333-3333-3333-3333-333333333333', 'authenticated', 'authenticated',
    'moath.alzaol@family-fund.local', crypt('password123', gen_salt('bf')), now(),
-   '{"provider":"email","providers":["email"]}', '{"display_name":"معاذ","display_name_en":"Moath"}', now(), now(), '', '', '', '');
+   '{"provider":"email","providers":["email"]}', '{"display_name":"معاذ","display_name_en":"Moath"}', now(), now(), '', '', '', ''),
+  ('00000000-0000-0000-0000-000000000000', '44444444-4444-4444-4444-444444444444', 'authenticated', 'authenticated',
+   'app.review@family-fund.local', crypt('password123', gen_salt('bf')), now(),
+   '{"provider":"email","providers":["email"]}', '{"display_name":"App Review","display_name_en":"App Review"}', now(), now(), '', '', '', '');
 
 insert into auth.identities (id, user_id, provider_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
 values
@@ -23,12 +26,30 @@ values
   (gen_random_uuid(), '22222222-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222',
    '{"sub":"22222222-2222-2222-2222-222222222222","email":"hamada.alzaol@family-fund.local"}', 'email', now(), now(), now()),
   (gen_random_uuid(), '33333333-3333-3333-3333-333333333333', '33333333-3333-3333-3333-333333333333',
-   '{"sub":"33333333-3333-3333-3333-333333333333","email":"moath.alzaol@family-fund.local"}', 'email', now(), now(), now());
+   '{"sub":"33333333-3333-3333-3333-333333333333","email":"moath.alzaol@family-fund.local"}', 'email', now(), now(), now()),
+  (gen_random_uuid(), '44444444-4444-4444-4444-444444444444', '44444444-4444-4444-4444-444444444444',
+   '{"sub":"44444444-4444-4444-4444-444444444444","email":"app.review@family-fund.local"}', 'email', now(), now(), now());
 
 insert into public.profiles (id, display_name, display_name_en, role, monthly_commitment_fils) values
   ('11111111-1111-1111-1111-111111111111', 'هاني', 'Hani', 'member', 100000),
   ('22222222-2222-2222-2222-222222222222', 'حمادة', 'Hamada', 'member', 50000),
   ('33333333-3333-3333-3333-333333333333', 'معاذ', 'Moath', 'admin', 50000);
+
+insert into public.profiles (
+  id,
+  display_name,
+  display_name_en,
+  role,
+  monthly_commitment_fils,
+  is_test_account
+) values (
+  '44444444-4444-4444-4444-444444444444',
+  'App Review',
+  'App Review',
+  'member',
+  0,
+  true
+);
 
 -- Financial data intentionally starts empty. The app creates the current
 -- period's unpaid commitment rows lazily when an authenticated member opens

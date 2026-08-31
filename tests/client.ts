@@ -14,6 +14,7 @@ export const SEED_PASSWORD = 'password123';
 export const HANI_ID = '11111111-1111-1111-1111-111111111111';
 export const MOHAMMED_ID = '22222222-2222-2222-2222-222222222222';
 export const MOATH_ID = '33333333-3333-3333-3333-333333333333';
+export const APP_TEST_USER_ID = '44444444-4444-4444-4444-444444444444';
 
 export function serviceClient() {
   return createClient<Database>(URL, SERVICE_ROLE_KEY, {
@@ -33,6 +34,7 @@ export async function asUser(email: string, password: string = SEED_PASSWORD) {
 export const asHani = () => asUser('hani.alzaol@family-fund.local');
 export const asMohammed = () => asUser('hamada.alzaol@family-fund.local');
 export const asMoath = () => asUser('moath.alzaol@family-fund.local');
+export const asAppTestUser = () => asUser('app.review@family-fund.local');
 
 export async function personalBalance(client: ReturnType<typeof serviceClient>, profileId: string) {
   const { data, error } = await client.from('v_personal_balances').select('*').eq('profile_id', profileId).single();
