@@ -65,6 +65,7 @@ export const en: Strings = {
     fundBalanceSummaryLabel: 'Fund balance',
     totalPersonalBalancesLabel: 'Total personal balances',
     shareSummaryError: 'Could not share the summary. Please try again.',
+    profileUnavailable: 'Your account profile could not be loaded. Sign out, then sign in again.',
   },
 
   requestsScreen: {
@@ -222,7 +223,24 @@ export const en: Strings = {
     languageEnglish: 'English',
     changePasswordLink: 'Change Password',
     membersLink: 'Family Members',
+    privacyPolicyLink: 'Privacy Policy',
+    deleteAccountLink: 'Delete Account',
     logout: 'Sign Out',
+  },
+
+  deleteAccount: {
+    title: 'Delete Account',
+    lead: 'You can start deletion of your account and personal data directly here.',
+    dataNotice: 'Your sign-in account and personal data will be deleted. Shared financial records may be retained after your identity is removed when needed to preserve the accuracy of the family ledger.',
+    processingNotice: 'The request will be reviewed and completed within 30 days.',
+    requestButton: 'Request Account Deletion',
+    confirmTitle: 'Delete your account?',
+    confirmMessage: 'Your account deletion request will start immediately. It cannot be withdrawn from inside the app after submission.',
+    confirmButton: 'Yes, Start Deletion',
+    requestedTitle: 'Request Received',
+    requestedMessage: 'Your account deletion request is being processed and will be completed within 30 days.',
+    requestedAt: (date) => `Requested: ${date}`,
+    error: 'Could not submit the account deletion request. Please try again.',
   },
 
   changePassword: {

@@ -48,6 +48,7 @@ export interface Strings {
     fundBalanceSummaryLabel: string;
     totalPersonalBalancesLabel: string;
     shareSummaryError: string;
+    profileUnavailable: string;
   };
 
   requestsScreen: {
@@ -205,7 +206,24 @@ export interface Strings {
     languageEnglish: string;
     changePasswordLink: string;
     membersLink: string;
+    privacyPolicyLink: string;
+    deleteAccountLink: string;
     logout: string;
+  };
+
+  deleteAccount: {
+    title: string;
+    lead: string;
+    dataNotice: string;
+    processingNotice: string;
+    requestButton: string;
+    confirmTitle: string;
+    confirmMessage: string;
+    confirmButton: string;
+    requestedTitle: string;
+    requestedMessage: string;
+    requestedAt: (date: string) => string;
+    error: string;
   };
 
   changePassword: {

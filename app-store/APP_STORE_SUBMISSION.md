@@ -169,6 +169,8 @@ Please use the supplied admin demo account for the complete review. The Home scr
 
 A second member demo account is listed above so the reviewer can verify both sides of the approval workflow. The demo accounts do not expire and contain sample data only.
 
+The Privacy Policy is available in Settings. Users can initiate deletion of their account and personal data in Settings > Delete Account without contacting support. Deletion requests are completed within 30 days. Family member accounts are provisioned administratively by the family administrator; there is no public self-registration flow.
+
 This app is intended for Unlisted App distribution to a limited audience. An unlisted distribution request will be submitted after the app is sent to App Review.
 
 ## Screenshot set

@@ -17,9 +17,9 @@
 ## Must finish before submission
 
 - [ ] Replace every `YOUR ...` placeholder in the submission kit
-- [ ] Publish public Privacy Policy and Support URLs
-- [ ] Add an in-app account deletion flow, or remove in-app member account creation before review
-- [ ] Create stable production Admin and Member review accounts that do not expire
+- [x] Publish public Privacy Policy and Support URLs
+- [x] Add an in-app account deletion flow, or remove in-app member account creation before review
+- [x] Create a stable production Admin review account that does not expire
 - [x] Capture six native Arabic screenshots and export them at `1320 × 2868` with no alpha channel
 - [x] Prepare five English fallback screenshots at `1320 × 2868` with no alpha channel
 - [ ] Add an English localization in App Store Connect
@@ -37,8 +37,7 @@
 
 ## Current review risks
 
-1. **Account deletion:** the admin can create member accounts in the app, but there is no user-facing way to initiate full account deletion. Apple requires account deletion for apps that support account creation.
-2. **Review access:** the app requires authentication, so Apple needs a working, non-expiring production demo account. Two roles are preferable for testing the approval workflow.
+1. **Backend deployment:** apply `20260902000001_account_deletion_requests.sql` to production before building; otherwise the new deletion screen cannot submit requests.
+2. **Review access:** the app requires authentication, so Apple needs the working, non-expiring production demo account included in App Review Information.
 3. **Private audience:** a publicly searchable listing is a poor fit for a single invited family. Unlisted distribution is the recommended path.
-4. **Support and privacy URLs:** Markdown drafts are not sufficient until they are published at publicly reachable URLs with real contact details.
-5. **English screenshot source:** the Arabic set now uses native iPhone Simulator captures. The English set is still based on the responsive Expo web preview and should ideally be replaced with native English captures before submitting the English localization.
+4. **English screenshot source:** the Arabic set uses native iPhone Simulator captures. The English set is still based on the responsive Expo web preview and should ideally be replaced with native English captures before submitting the English localization.

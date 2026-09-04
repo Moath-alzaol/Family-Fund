@@ -2,6 +2,7 @@ import { execSync } from 'node:child_process';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 import {
+  anonymousClient,
   asHani,
   asMoath,
   asMohammed,
@@ -306,4 +307,30 @@ describe('14. derived balances always equal the sum of their ledger entries', ()
     const sum = (rows ?? []).reduce((s, r) => s + r.amount_fils, 0);
     expect(await fundBalance(admin)).toBe(sum);
   });
+});
+
+// App Store account-deletion requirement — users initiate in-app and can only
+// read the status of their own request while an operator completes the process.
+test('15. account deletion requests are created directly and remain private', async () => {
+  const anonymousRequest = await anonymousClient().rpc('request_account_deletion');
+  expect(anonymousRequest.error).not.toBeNull();
+
+  const hani = await asHani();
+  const mohammed = await asMohammed();
+
+  const directInsert = await hani.from('account_deletion_requests').insert({ user_id: HANI_ID });
+  expect(directInsert.error).not.toBeNull();
+
+  const created = await hani.rpc('request_account_deletion');
+  expect(created.error).toBeNull();
+  expect(created.data?.user_id).toBe(HANI_ID);
+  expect(created.data?.status).toBe('pending');
+
+  const ownRequest = await hani.from('account_deletion_requests').select('*').single();
+  expect(ownRequest.error).toBeNull();
+  expect(ownRequest.data?.user_id).toBe(HANI_ID);
+
+  const otherUsersRequests = await mohammed.from('account_deletion_requests').select('*');
+  expect(otherUsersRequests.error).toBeNull();
+  expect(otherUsersRequests.data).toHaveLength(0);
 });

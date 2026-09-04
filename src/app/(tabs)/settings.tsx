@@ -1,9 +1,10 @@
-import { useRouter } from 'expo-router';
+import { useRouter, type Href } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Linking, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { supabase } from '@/api/supabase';
+import { PRIVACY_POLICY_URL } from '@/constants/legal';
 import { useAppSettings, useSetAdminDepositRequiresApproval } from '@/hooks/use-admin-actions';
 import { useMyProfile } from '@/hooks/use-profiles';
 import { getCurrentLocaleSync, isRTL, setLocale, type Locale } from '@/i18n/locale';
@@ -61,6 +62,16 @@ export default function SettingsScreen() {
           </TouchableOpacity>
           <TouchableOpacity style={styles.linkRow} onPress={() => router.push('/change-password')}>
             <Text style={styles.linkRowText}>{strings.settings.changePasswordLink}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            accessibilityRole="link"
+            style={styles.linkRow}
+            onPress={() => void Linking.openURL(PRIVACY_POLICY_URL)}
+          >
+            <Text style={styles.linkRowText}>{strings.settings.privacyPolicyLink}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.linkRow} onPress={() => router.push('/delete-account' as Href)}>
+            <Text style={[styles.linkRowText, styles.deleteAccountText]}>{strings.settings.deleteAccountLink}</Text>
           </TouchableOpacity>
         </View>
 
@@ -172,6 +183,9 @@ function createStyles() {
       fontSize: 13.5,
       color: colors.ink,
       textAlign: isRTL() ? 'right' : 'left',
+    },
+    deleteAccountText: {
+      color: colors.danger,
     },
     adminCard: {
       marginTop: 12,

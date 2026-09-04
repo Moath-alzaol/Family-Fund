@@ -42,7 +42,7 @@ export default function HomeScreen() {
 
   if (myProfile.isLoading || profiles.isLoading || balances.isLoading || fund.isLoading) return <LoadingView />;
   if (myProfile.isError || profiles.isError || balances.isError || fund.isError) return <ErrorView />;
-  if (!myProfile.data) return null;
+  if (!myProfile.data) return <ErrorView message={strings.home.profileUnavailable} />;
 
   const balanceOf = (profileId: string) => balances.data?.find((b) => b.profile_id === profileId)?.balance_fils ?? 0;
   const commitmentOf = (profileId: string) => commitments.data?.find((c) => c.profile_id === profileId);

@@ -22,6 +22,12 @@ export function serviceClient() {
   });
 }
 
+export function anonymousClient() {
+  return createClient<Database>(URL, ANON_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+}
+
 export async function asUser(email: string, password: string = SEED_PASSWORD) {
   const client = createClient<Database>(URL, ANON_KEY, {
     auth: { persistSession: false, autoRefreshToken: false },

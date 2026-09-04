@@ -34,6 +34,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_deletion_requests: {
+        Row: {
+          completed_at: string | null
+          id: string
+          requested_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          id?: string
+          requested_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          id?: string
+          requested_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       app_settings: {
         Row: {
           admin_deposit_requires_approval: boolean
@@ -432,6 +456,22 @@ export type Database = {
         SetofOptions: {
           from: "*"
           to: "requests"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      request_account_deletion: {
+        Args: never
+        Returns: {
+          completed_at: string | null
+          id: string
+          requested_at: string
+          status: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "account_deletion_requests"
           isOneToOne: true
           isSetofReturn: false
         }

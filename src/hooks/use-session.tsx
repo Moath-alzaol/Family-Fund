@@ -1,6 +1,7 @@
 import type { Session } from '@supabase/supabase-js';
-import { createContext, useContext, useEffect, useState, type PropsWithChildren } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, type PropsWithChildren } from 'react';
 
+import { queryClient } from '@/api/query-client';
 import { supabase } from '@/api/supabase';
 
 interface SessionContextValue {
@@ -13,15 +14,29 @@ const SessionContext = createContext<SessionContextValue>({ session: null, isLoa
 export function SessionProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const userIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setIsLoading(false);
-    });
+    const applySession = (nextSession: Session | null) => {
+      const nextUserId = nextSession?.user.id ?? null;
+      if (userIdRef.current !== nextUserId) {
+        // Every query in this app is scoped by Supabase RLS. Cached results
+        // from the previous user must never be rendered for the next user.
+        queryClient.clear();
+        userIdRef.current = nextUserId;
+      }
+      setSession(nextSession);
+    };
+
+    supabase.auth
+      .getSession()
+      .then(({ data }) => applySession(data.session))
+      .catch(() => applySession(null))
+      .finally(() => setIsLoading(false));
 
     const { data } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
+      applySession(newSession);
+      setIsLoading(false);
     });
 
     return () => data.subscription.unsubscribe();

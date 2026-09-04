@@ -65,6 +65,7 @@ export const ar: Strings = {
     fundBalanceSummaryLabel: 'رصيد الصندوق',
     totalPersonalBalancesLabel: 'مجموع الأرصدة الشخصية',
     shareSummaryError: 'تعذّرت مشاركة الملخص. حاول مرة أخرى.',
+    profileUnavailable: 'تعذّر تحميل ملف حسابك. سجّل الخروج ثم حاول الدخول مرة أخرى.',
   },
 
   requestsScreen: {
@@ -222,7 +223,24 @@ export const ar: Strings = {
     languageEnglish: 'English',
     changePasswordLink: 'تغيير كلمة المرور',
     membersLink: 'أعضاء العائلة',
+    privacyPolicyLink: 'سياسة الخصوصية',
+    deleteAccountLink: 'حذف الحساب',
     logout: 'تسجيل الخروج',
+  },
+
+  deleteAccount: {
+    title: 'حذف الحساب',
+    lead: 'يمكنك بدء حذف حسابك وبياناتك مباشرة من هنا.',
+    dataNotice: 'سيُحذف حساب الدخول وبياناتك الشخصية. قد نحتفظ بالسجلات المالية المشتركة بعد إزالة هويتك منها عندما يلزم ذلك لحماية دقة سجل العائلة.',
+    processingNotice: 'تتم مراجعة الطلب وإكماله خلال 30 يوماً كحد أقصى.',
+    requestButton: 'طلب حذف حسابي',
+    confirmTitle: 'هل تريد حذف حسابك؟',
+    confirmMessage: 'سيبدأ طلب حذف الحساب فوراً. لا يمكن التراجع عنه من داخل التطبيق بعد إرساله.',
+    confirmButton: 'نعم، ابدأ الحذف',
+    requestedTitle: 'تم استلام طلبك',
+    requestedMessage: 'طلب حذف حسابك قيد المعالجة وسيُستكمل خلال 30 يوماً كحد أقصى.',
+    requestedAt: (date) => `تاريخ الطلب: ${date}`,
+    error: 'تعذّر إرسال طلب حذف الحساب. حاول مرة أخرى.',
   },
 
   changePassword: {

@@ -16,8 +16,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { queryClient } from '@/api/query-client';
 import { useNotificationCoordinator } from '@/hooks/use-notifications';
-import { SessionProvider } from '@/hooks/use-session';
-import { useSession } from '@/hooks/use-session';
+import { SessionProvider, useSession } from '@/hooks/use-session';
 import { initLocale, subscribeToLocale, type Locale } from '@/i18n/locale';
 import { colors } from '@/ui/theme';
 

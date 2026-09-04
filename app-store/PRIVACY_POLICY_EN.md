@@ -36,7 +36,7 @@ The app may request permission to display local notifications about requests and
 
 ## Your choices and rights
 
-You can request access to, correction of, or deletion of your data using the contact method below. Before release, the app must also provide a direct way to initiate account deletion if in-app member account creation remains available.
+You can request access to or correction of your data using the contact method below. You can start deletion of your account and personal data directly in the app under **Settings → Delete Account**. Deletion requests are completed within 30 days. Shared financial records may be retained after your identity is removed when necessary to preserve the accuracy of the family ledger or comply with legal requirements.
 
 ## Children's privacy
 
